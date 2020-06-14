@@ -41,7 +41,7 @@ func main() {
 			break
 		}
 		n := 0
-		fields := strings.FieldsFunc("aaa    bbbb    ccc dddd", func(r rune) bool {
+		fields := strings.FieldsFunc(input, func(r rune) bool {
 			if unicode.IsSpace(r) {
 				n++
 				if n < fieldsCount {
