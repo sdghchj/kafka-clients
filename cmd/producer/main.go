@@ -3,10 +3,8 @@ package main
 import (
 	"flag"
 	"fmt"
-	"strings"
-	"unicode"
-
 	"github.com/sdghchj/kafka-tools/kafka"
+	"strings"
 )
 
 func main() {
@@ -27,35 +25,25 @@ func main() {
 	fieldsCount := 2
 	if len(topic) == 0 {
 		fieldsCount = 3
-		fmt.Println("input format: topic key value")
-	} else {
-		fmt.Println("input format: key value")
 	}
-	var input string
+	var key, value string
 	for {
-		_, err = fmt.Scanln(&input)
-		if err != nil {
-			fmt.Println(err)
-			break
-		} else if strings.ToLower(input) == "exit" {
-			break
-		}
-		n := 0
-		fields := strings.FieldsFunc(input, func(r rune) bool {
-			if unicode.IsSpace(r) {
-				n++
-				if n < fieldsCount {
-					return true
-				}
+		if fieldsCount == 2 {
+			fmt.Println("input format: key value")
+			_, err = fmt.Scanln(&key, &value)
+			if err != nil {
+				fmt.Println(err)
+				break
 			}
-			return false
-		})
-		if len(fields) != fieldsCount {
-			continue
-		} else if len(fields) == 2 {
-			fmt.Println(producer.Send(topic, []byte(fields[0]), []byte(fields[1])))
-		} else if len(fields) == 3 {
-			fmt.Println(producer.Send(fields[0], []byte(fields[1]), []byte(fields[2])))
+			fmt.Println(producer.Send(topic, []byte(key), []byte(value)))
+		} else if fieldsCount == 3 {
+			fmt.Println("input format: topic key value")
+			_, err = fmt.Scanln(&topic, &key, &value)
+			if err != nil {
+				fmt.Println(err)
+				break
+			}
+			fmt.Println(producer.Send(topic, []byte(key), []byte(value)))
 		}
 	}
 }
