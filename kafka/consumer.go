@@ -35,7 +35,7 @@ func (c *groupConsumer) Close() error {
 
 func OpenGroupConsumer(addrs, topics []string, consumerOffset int64, groupId string, handler ConsumerGroupHandler) (Consumer, error) {
 	config := sarama.NewConfig()
-	config.Version = sarama.V0_10_2_0
+	config.Version = sarama.V0_11_0_0
 	config.Consumer.Offsets.Initial = consumerOffset //sarama.OffsetOldest
 	config.Consumer.Return.Errors = true
 
