@@ -31,6 +31,7 @@ func (h *handler) ConsumeClaim(sess sarama.ConsumerGroupSession, claim sarama.Co
 		for _, header := range msg.Headers {
 			fmt.Printf("header: %s = %s\n", header.Key, header.Value)
 		}
+		fmt.Printf("key: %s\n", string(msg.Key))
 		fmt.Printf("value: %s\n", string(msg.Value))
 		sess.MarkMessage(msg, "")
 	}
