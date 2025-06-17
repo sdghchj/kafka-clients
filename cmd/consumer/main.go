@@ -27,12 +27,16 @@ func (*handler) Cleanup(s sarama.ConsumerGroupSession) error {
 func (h *handler) ConsumeClaim(sess sarama.ConsumerGroupSession, claim sarama.ConsumerGroupClaim) error {
 	for msg := range claim.Messages() {
 		h.n++
-		fmt.Printf("topic: %q\npartition: %d\noffset: %d\n", msg.Topic, msg.Partition, msg.Offset)
+		fmt.Println("---------------------------------------------")
+		fmt.Printf("time: %s\n", time.Now().Format("2006-01-02 15:04:05.000"))
+		fmt.Printf("topic: %s\npartition: %d\noffset: %d\n", msg.Topic, msg.Partition, msg.Offset)
 		for _, header := range msg.Headers {
 			fmt.Printf("header: %s = %s\n", header.Key, header.Value)
 		}
 		fmt.Printf("key: %s\n", string(msg.Key))
 		fmt.Printf("value: %s\n", string(msg.Value))
+		fmt.Println("---------------------------------------------")
+		fmt.Println("")
 		sess.MarkMessage(msg, "")
 	}
 	return nil
